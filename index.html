@@ -3,118 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dev/ByAltun | Professional Portfolio</title>
+    <title>ByAltun | Apps</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #0b1120; color: #f8fafc; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        body { background-color: #f1f5f9; color: #1e293b; }
+        .card { background: #ffffff; box-shadow: 10px 10px 20px #d1d5db, -10px -10px 20px #ffffff; border-radius: 20px; transition: 0.3s; }
+        .btn { background: #4f46e5; color: white; border-radius: 12px; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-5 md:p-10">
 
-<!-- Navbar -->
-<nav class="glass sticky top-0 p-6 flex justify-between items-center z-40 rounded-2xl mb-8">
-    <h1 class="text-3xl font-black text-indigo-400 cursor-pointer" onclick="openAdmin()">dev/ByAltun</h1>
-    <select id="lang" onchange="render()" class="bg-slate-800 p-2 rounded-lg border border-slate-600">
+<!-- Nav -->
+<nav class="flex justify-between items-center mb-12">
+    <h1 class="text-3xl font-extrabold text-indigo-600 cursor-pointer" onclick="openAdmin()">ByAltun.dev 🤖</h1>
+    <select id="lang" onchange="render()" class="bg-white p-2 rounded-lg shadow-inner border">
         <option value="tr">🇹🇷 TR</option><option value="ua">🇺🇦 UA</option>
         <option value="en">🇺🇸 ENG</option><option value="ru">🇷🇺 RU</option>
     </select>
 </nav>
 
-<!-- Duyuru Alanı -->
-<div id="announcementBox" class="max-w-5xl mx-auto mb-8 p-6 glass rounded-2xl border-l-4 border-indigo-500 italic"></div>
+<!-- Duyuru -->
+<div id="announcementBox" class="max-w-4xl mx-auto mb-10 p-6 bg-indigo-50 border-l-4 border-indigo-500 rounded-lg shadow-md italic"></div>
 
-<!-- Uygulama Grid -->
-<div id="appGrid" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+<!-- Grid -->
+<div id="appGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto"></div>
 
-<!-- Admin Panel -->
-<div id="adminPanel" class="hidden fixed inset-0 bg-black/95 z-50 overflow-y-auto p-5">
-    <div class="max-w-4xl mx-auto bg-slate-900 p-8 rounded-3xl border border-slate-700">
-        <h2 class="text-3xl font-bold mb-6">Admin Dashboard</h2>
-        
-        <!-- Duyuru Yönetimi -->
-        <div class="mb-8 p-4 bg-slate-800 rounded-xl">
-            <h3 class="font-bold mb-2">Duyuru Yönetimi</h3>
-            <textarea id="annTr" placeholder="Duyuru (TR)" class="w-full p-2 bg-slate-700 rounded mb-1"></textarea>
-            <textarea id="annUa" placeholder="Duyuru (UA)" class="w-full p-2 bg-slate-700 rounded mb-1"></textarea>
-            <textarea id="annEn" placeholder="Duyuru (ENG)" class="w-full p-2 bg-slate-700 rounded mb-1"></textarea>
-            <textarea id="annRu" placeholder="Duyuru (RU)" class="w-full p-2 bg-slate-700 rounded mb-1"></textarea>
-            <button onclick="saveAnn()" class="w-full bg-indigo-600 p-2 mt-2 rounded">Duyuruyu Kaydet</button>
-        </div>
-
-        <!-- Uygulama Yönetimi -->
-        <div class="grid grid-cols-2 gap-4">
-            <input id="nTr" placeholder="Ad (TR)" class="p-2 bg-slate-800 rounded">
-            <input id="nUa" placeholder="Ad (UA)" class="p-2 bg-slate-800 rounded">
-            <input id="nEn" placeholder="Ad (ENG)" class="p-2 bg-slate-800 rounded">
-            <input id="nRu" placeholder="Ad (RU)" class="p-2 bg-slate-800 rounded">
-            <textarea id="dTr" placeholder="Açıklama (TR)" class="p-2 bg-slate-800 rounded"></textarea>
-            <textarea id="dUa" placeholder="Açıklama (UA)" class="p-2 bg-slate-800 rounded"></textarea>
-            <textarea id="dEn" placeholder="Açıklama (ENG)" class="p-2 bg-slate-800 rounded"></textarea>
-            <textarea id="dRu" placeholder="Açıklama (RU)" class="p-2 bg-slate-800 rounded"></textarea>
-            <input id="link" placeholder="Google Play Link" class="col-span-2 p-2 bg-slate-800 rounded">
-        </div>
-        <button onclick="addApp()" class="w-full mt-4 bg-green-600 p-3 rounded-xl font-bold">Uygulamayı Ekle</button>
-        
-        <div class="mt-10 pt-5 border-t border-slate-700">
-            <input type="text" id="passView" class="bg-slate-800 p-2 rounded w-full">
-            <button onclick="updatePass()" class="w-full bg-blue-600 mt-2 p-2 rounded">Şifreyi Değiştir</button>
-        </div>
-        <button onclick="document.getElementById('adminPanel').style.display='none'" class="w-full mt-4 bg-red-600 p-3 rounded-xl">Kapat</button>
+<!-- Admin Paneli -->
+<div id="adminPanel" class="hidden fixed inset-0 bg-gray-900/80 z-50 flex justify-center items-center p-4">
+    <div class="bg-white p-8 rounded-3xl w-full max-w-lg shadow-2xl">
+        <h2 class="text-2xl font-bold mb-4">Admin Dashboard</h2>
+        <input type="text" id="nTr" placeholder="Ad (TR)" class="w-full p-2 mb-2 border rounded">
+        <textarea id="dTr" placeholder="Açıklama (TR)" class="w-full p-2 mb-2 border rounded"></textarea>
+        <input type="text" id="link" placeholder="Google Play URL" class="w-full p-2 mb-4 border rounded">
+        <button onclick="addApp()" class="w-full bg-green-500 text-white p-3 rounded-xl font-bold">Uygulamayı Ekle</button>
+        <button onclick="closeAdmin()" class="w-full mt-2 bg-gray-200 p-3 rounded-xl">Kapat</button>
     </div>
 </div>
 
+<footer class="text-center mt-20 opacity-50">
+    Ziyaretçi IP: <span id="ip">Bulunuyor...</span>
+</footer>
+
 <script>
     document.addEventListener('contextmenu', e => e.preventDefault());
-    
     let apps = JSON.parse(localStorage.getItem('apps')) || [];
-    let ann = JSON.parse(localStorage.getItem('ann')) || {tr:"", ua:"", en:"", ru:""};
     let pass = localStorage.getItem('adminPass') || '1234';
+
+    fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => document.getElementById('ip').innerText = d.ip);
 
     function render() {
         const lang = document.getElementById('lang').value;
-        document.getElementById('announcementBox').innerText = ann[lang] || "Duyuru bulunamadı.";
         document.getElementById('appGrid').innerHTML = apps.map((app, i) => `
-            <div class="glass p-6 rounded-2xl hover:border-indigo-500 transition">
-                <h3 class="text-2xl font-bold">${app.name[lang]}</h3>
-                <p class="mt-3 opacity-70">${app.desc[lang]}</p>
-                <a href="${app.link}" target="_blank" class="mt-4 block bg-indigo-600 text-center py-3 rounded-xl">Google Play</a>
-                <button onclick="delApp(${i})" class="text-red-400 mt-2 text-xs">Sil</button>
+            <div class="card p-6 flex flex-col items-center text-center">
+                <div class="text-5xl mb-4">🤖</div>
+                <h3 class="text-xl font-bold">${app.name[lang] || app.name.tr}</h3>
+                <p class="mt-2 text-sm text-gray-600">${app.desc[lang] || app.desc.tr}</p>
+                <a href="${app.link}" target="_blank" class="btn mt-6 px-6 py-2 shadow-lg">Google Play İndir</a>
+                <button onclick="delApp(${i})" class="mt-4 text-red-500 text-xs">Uygulamayı Kaldır</button>
             </div>
         `).join('');
     }
 
-    function openAdmin() {
-        let p = prompt("Admin Şifresi:");
-        if(p === pass) {
-            document.getElementById('adminPanel').style.display = 'block';
-            document.getElementById('passView').value = pass;
-        }
-    }
-
     function addApp() {
         apps.push({
-            name: {tr: document.getElementById('nTr').value, ua: document.getElementById('nUa').value, en: document.getElementById('nEn').value, ru: document.getElementById('nRu').value},
-            desc: {tr: document.getElementById('dTr').value, ua: document.getElementById('dUa').value, en: document.getElementById('dEn').value, ru: document.getElementById('dRu').value},
+            name: {tr: document.getElementById('nTr').value},
+            desc: {tr: document.getElementById('dTr').value},
             link: document.getElementById('link').value
         });
         localStorage.setItem('apps', JSON.stringify(apps));
-        render();
+        render(); closeAdmin();
     }
 
-    function saveAnn() {
-        ann = {tr: document.getElementById('annTr').value, ua: document.getElementById('annUa').value, en: document.getElementById('annEn').value, ru: document.getElementById('annRu').value};
-        localStorage.setItem('ann', JSON.stringify(ann));
-        render();
+    function openAdmin() {
+        let p = prompt("Admin Şifresi:");
+        if(p === pass) document.getElementById('adminPanel').style.display = 'flex';
     }
 
-    function updatePass() {
-        pass = document.getElementById('passView').value;
-        localStorage.setItem('adminPass', pass);
-        alert('Şifre güncellendi!');
-    }
-
-    function delApp(i) { apps.splice(i, 1); localStorage.setItem('apps', JSON.stringify(apps)); render(); }
+    function delApp(i) { if(confirm('Silinsin mi?')) { apps.splice(i, 1); localStorage.setItem('apps', JSON.stringify(apps)); render(); } }
+    function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
 
     render();
 </script>
