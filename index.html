@@ -3,142 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dev/ByAltun | Apps</title>
+    <title>dev/ByAltun | Professional App Showroom</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
         
-        /* Neomorfizm & Soft Gölgeler */
-        .soft-card { background: #ffffff; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01); border: 1px solid rgba(226, 232, 240, 0.8); border-radius: 24px; transition: all 0.3s ease; }
-        .soft-card:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); transform: translateY(-5px); }
-        .admin-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); }
+        /* Modern Premium Gölgeler ve Kart Tasarımları */
+        .app-card { background: #ffffff; border: 1px solid rgba(241, 245, 249, 1); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .app-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); border-color: rgba(226, 232, 240, 1); }
+        .admin-glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.7); }
         
-        /* Özel Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        /* Google Play Buton Efektleri */
+        .play-button { transition: transform 0.2s ease, background-color 0.2s ease; }
+        .play-button:active { transform: scale(0.97); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative">
+<body class="min-h-screen flex flex-col relative antialiased">
 
 <!-- NAVBAR -->
 <nav class="w-full max-w-7xl mx-auto p-6 md:p-10 flex justify-between items-center z-40">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="clickLogo()">
-        <div class="w-12 h-12 bg-indigo-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg shadow-indigo-200">/A</div>
-        <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">dev/ByAltun</h1>
+    <div class="flex items-center gap-3 cursor-pointer select-none" onclick="clickLogo()">
+        <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-xl font-extrabold shadow-lg shadow-slate-900/10 tracking-tighter">/BA</div>
+        <div>
+            <h1 class="text-xl font-extrabold text-slate-900 tracking-tight leading-none">dev/ByAltun</h1>
+            <span class="text-[11px] text-slate-400 font-semibold tracking-wider uppercase">Mobile Developer</span>
+        </div>
     </div>
-    <select id="langSelect" onchange="renderPublic()" class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 font-semibold text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="tr">🇹🇷 TR</option><option value="ua">🇺🇦 UA</option>
-        <option value="en">🇺🇸 ENG</option><option value="ru">🇷🇺 RU</option>
+    <select id="langSelect" onchange="renderPublic()" class="bg-white px-4 py-2.5 rounded-xl shadow-sm border border-slate-200 font-bold text-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer text-sm">
+        <option value="tr">🇹🇷 Türkçe</option>
+        <option value="ua">🇺🇦 Українська</option>
+        <option value="en">🇺🇸 English</option>
+        <option value="ru">🇷🇺 Русский</option>
     </select>
 </nav>
 
 <!-- DUYURU ALANI -->
-<div id="publicAnnBox" class="max-w-4xl mx-auto px-6 w-full hidden mb-8">
-    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 text-indigo-800 font-medium flex items-start gap-4 shadow-sm">
-        <span class="text-2xl">📢</span>
-        <p id="publicAnnText" class="mt-1"></p>
+<div id="publicAnnBox" class="max-w-7xl mx-auto px-6 md:px-10 w-full hidden mb-8">
+    <div class="bg-blue-50/60 border border-blue-100 rounded-2xl p-5 text-blue-900 font-medium flex items-center gap-4">
+        <div class="w-10 h-10 bg-blue-500/10 text-blue-600 rounded-xl flex items-center justify-center text-lg flex-shrink-0">📢</div>
+        <p id="publicAnnText" class="text-sm md:text-base"></p>
     </div>
 </div>
 
-<!-- UYGULAMA VİTRİNİ (Sadece Gösterim) -->
-<main class="flex-grow w-full max-w-7xl mx-auto px-6 pb-20">
+<!-- UYGULAMA VİTRİNİ (Tamamen Temiz Kullanıcı Tarafı) -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-6 md:px-10 pb-20">
     <div id="publicAppGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
 </main>
 
-<!-- FOOTER (IP GÖSTERGESİ) -->
-<footer class="w-full py-8 text-center text-slate-400 text-sm font-medium border-t border-slate-200">
-    Designed by <span class="text-indigo-500">ByAltun</span> | Ziyaretçi IP: <span id="userIp" class="text-slate-600">Yükleniyor...</span>
+<!-- FOOTER -->
+<footer class="w-full py-8 text-center text-slate-400 text-xs font-semibold border-t border-slate-100 bg-white">
+    © 2026 <span class="text-slate-700">ByAltun</span> | System IP: <span id="userIp" class="text-slate-500 font-mono">Connecting...</span>
 </footer>
 
 <!-- ========================================== -->
-<!-- GİZLİ ADMİN PANELİ (TAM YÖNETİM)           -->
+<!-- PROFESYONEL ADMİN KONTROL MERKEZİ         -->
 <!-- ========================================== -->
-<div id="adminPanel" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 overflow-y-auto p-4 md:p-10 flex justify-center items-start">
-    <div class="admin-glass w-full max-w-5xl rounded-3xl shadow-2xl border border-white p-8">
-        <div class="flex justify-between items-center mb-8 border-b pb-4">
-            <h2 class="text-3xl font-black text-slate-800">⚙️ Admin Kontrol Merkezi</h2>
-            <button onclick="closeAdmin()" class="bg-red-100 text-red-600 px-4 py-2 rounded-xl font-bold hover:bg-red-200 transition">Kapat</button>
+<div id="adminPanel" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 overflow-y-auto p-4 md:p-10 flex justify-center items-start">
+    <div class="admin-glass w-full max-w-6xl rounded-3xl shadow-2xl p-6 md:p-8 mt-4 mb-4">
+        <div class="flex justify-between items-center mb-8 border-b border-slate-100 pb-5">
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2">⚙️ HQ Control Panel</h2>
+                <p class="text-xs text-slate-400 mt-0.5 font-medium">Uygulama ekleme, düzenleme ve silme paneli</p>
+            </div>
+            <button onclick="closeAdmin()" class="bg-slate-100 text-slate-700 px-5 py-2.5 rounded-xl font-bold hover:bg-slate-200 transition text-sm">Paneli Kapat</button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- SOL KOLON: Ayarlar & Duyuru -->
+            <!-- SOL KOLON: Sistem Ayarları -->
             <div class="space-y-6">
-                <!-- Şifre Yönetimi -->
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <h3 class="font-bold text-slate-700 mb-4 flex justify-between">
-                        <span>🔑 Şifre Yönetimi</span>
-                        <span class="text-indigo-600 font-mono text-sm" id="adminPassView"></span>
+                <!-- Güvenlik Şifresi -->
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/60">
+                    <h3 class="font-bold text-slate-800 text-sm mb-3 flex justify-between items-center">
+                        <span>🔑 Panel Giriş Şifresi</span>
+                        <span class="text-xs bg-slate-200 px-2 py-0.5 rounded font-mono text-slate-600" id="adminPassView"></span>
                     </h3>
-                    <input type="text" id="newPassInput" placeholder="Yeni Şifre Belirle" class="w-full p-3 rounded-xl border border-slate-300 mb-3 focus:ring-2 focus:ring-indigo-500">
-                    <button onclick="changePassword()" class="w-full bg-slate-800 text-white font-semibold py-2 rounded-xl">Şifreyi Güncelle</button>
+                    <div class="flex gap-2">
+                        <input type="text" id="newPassInput" placeholder="Yeni Şifre" class="flex-grow p-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-900">
+                        <button onclick="changePassword()" class="bg-slate-900 text-white font-bold px-4 rounded-xl text-xs hover:bg-slate-800">Değiştir</button>
+                    </div>
                 </div>
 
-                <!-- Duyuru Yönetimi -->
-                <div class="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100">
-                    <h3 class="font-bold text-indigo-900 mb-4">📢 Duyuru Yönetimi</h3>
-                    <textarea id="annTr" placeholder="Duyuru (TR)" class="w-full p-2 mb-2 rounded-lg border border-slate-200 text-sm"></textarea>
-                    <textarea id="annUa" placeholder="Duyuru (UA)" class="w-full p-2 mb-2 rounded-lg border border-slate-200 text-sm"></textarea>
-                    <textarea id="annEn" placeholder="Duyuru (ENG)" class="w-full p-2 mb-2 rounded-lg border border-slate-200 text-sm"></textarea>
-                    <textarea id="annRu" placeholder="Duyuru (RU)" class="w-full p-2 mb-3 rounded-lg border border-slate-200 text-sm"></textarea>
-                    <div class="flex gap-2">
-                        <button onclick="saveAnnouncement()" class="flex-1 bg-indigo-600 text-white font-bold py-2 rounded-xl">Yayınla</button>
-                        <button onclick="clearAnnouncement()" class="flex-1 bg-red-500 text-white font-bold py-2 rounded-xl">Kaldır</button>
+                <!-- Çok Dilli Duyuru Paneli -->
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/60 space-y-3">
+                    <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1">📢 Global Duyuru Paneli</h3>
+                    <input id="annTr" placeholder="Duyuru Metni (TR)" class="w-full p-2 text-xs rounded-lg border border-slate-200">
+                    <input id="annUa" placeholder="Duyuru Metni (UA)" class="w-full p-2 text-xs rounded-lg border border-slate-200">
+                    <input id="annEn" placeholder="Duyuru Metni (ENG)" class="w-full p-2 text-xs rounded-lg border border-slate-200">
+                    <input id="annRu" placeholder="Duyuru Metni (RU)" class="w-full p-2 text-xs rounded-lg border border-slate-200">
+                    <div class="flex gap-2 pt-1">
+                        <button onclick="saveAnnouncement()" class="flex-1 bg-slate-900 text-white font-bold py-2 rounded-xl text-xs hover:bg-slate-800">Yayınla</button>
+                        <button onclick="clearAnnouncement()" class="flex-1 bg-red-50 text-red-600 font-bold py-2 rounded-xl text-xs hover:bg-red-100">Duyuruyu Kaldır</button>
                     </div>
                 </div>
             </div>
 
-            <!-- SAĞ KOLON: Uygulama Ekle/Düzenle & Liste -->
+            <!-- SAĞ KOLON: Uygulama Motoru -->
             <div class="lg:col-span-2 space-y-6">
-                
-                <!-- Uygulama Formu -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-4 text-xl" id="formTitle">📱 Yeni Uygulama Ekle</h3>
+                <!-- Uygulama Ekleme ve Güncelleme Formu -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-extrabold text-slate-900 text-lg" id="formTitle">📱 Yeni Uygulama Entegre Et</h3>
+                        <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Live System</span>
+                    </div>
+                    
                     <input type="hidden" id="editAppId" value="-1">
                     
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-slate-400 uppercase">Uygulama Adı</label>
-                            <input id="appNameTr" placeholder="TR Adı" class="w-full p-2 rounded-lg border bg-slate-50">
-                            <input id="appNameUa" placeholder="UA Adı" class="w-full p-2 rounded-lg border bg-slate-50">
-                            <input id="appNameEn" placeholder="ENG Adı" class="w-full p-2 rounded-lg border bg-slate-50">
-                            <input id="appNameRu" placeholder="RU Adı" class="w-full p-2 rounded-lg border bg-slate-50">
+                    <!-- İkon Seçici ve Önizleme -->
+                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-dashed border-slate-300">
+                        <div id="iconPreviewContainer" class="w-16 h-16 rounded-2xl bg-white border flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
+                            <img id="iconPreview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'/></svg>" class="w-full h-full object-cover">
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-slate-400 uppercase">Kısa Açıklama</label>
-                            <input id="appDescTr" placeholder="TR Açıklama" class="w-full p-2 rounded-lg border bg-slate-50">
-                            <input id="appDescUa" placeholder="UA Açıklama" class="w-full p-2 rounded-lg border bg-slate-50">
-                            <input id="appDescEn" placeholder="ENG Açıklama" class="w-full p-2 rounded-lg border bg-slate-50">
-                            <input id="appDescRu" placeholder="RU Açıklama" class="w-full p-2 rounded-lg border bg-slate-50">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-700">Uygulama İkonu Yükle</label>
+                            <input type="file" id="appIconInput" accept="image/*" class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer">
+                            <p class="text-[10px] text-slate-400">Kare (1:1) PNG veya JPG önerilir. Sistem otomatik optimize eder.</p>
                         </div>
                     </div>
-                    <div class="mb-4">
-                        <label class="text-xs font-bold text-slate-400 uppercase">Google Play Linki</label>
-                        <input id="appLink" placeholder="https://play.google.com/store/apps/details?id=..." class="w-full p-3 mt-1 rounded-xl border bg-slate-50">
+
+                    <!-- İsim ve Açıklama Alanları -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Uygulama Adı (Dil Uyumlu)</label>
+                            <input id="appNameTr" placeholder="Türkçe Adı" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                            <input id="appNameUa" placeholder="Українська назва" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                            <input id="appNameEn" placeholder="English Name" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                            <input id="appNameRu" placeholder="Русское название" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Uygulama Açıklaması (Dil Uyumlu)</label>
+                            <input id="appDescTr" placeholder="Türkçe Detaylı Açıklama" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                            <input id="appDescUa" placeholder="Опис українською" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                            <input id="appDescEn" placeholder="English Description" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                            <input id="appDescRu" placeholder="Описание на русском" class="w-full p-2 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900">
+                        </div>
                     </div>
                     
-                    <div class="flex gap-3">
-                        <button onclick="saveApp()" id="saveAppBtn" class="flex-1 bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition">Listeye Ekle</button>
-                        <button onclick="resetAppForm()" id="cancelEditBtn" class="hidden bg-slate-200 text-slate-700 font-bold py-3 px-6 rounded-xl">İptal</button>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Google Play Store URL</label>
+                        <input id="appLink" placeholder="https://play.google.com/store/apps/details?id=com.company.app" class="w-full p-3 mt-1 text-sm rounded-xl border bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 font-mono">
+                    </div>
+                    
+                    <div class="flex gap-3 pt-2">
+                        <button onclick="saveApp()" id="saveAppBtn" class="flex-1 bg-slate-950 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 transition shadow-sm text-sm">Veriyi Canlıya Al</button>
+                        <button onclick="resetAppForm()" id="cancelEditBtn" class="hidden bg-slate-100 text-slate-700 font-bold py-3.5 px-6 rounded-xl text-sm">İptal Et</button>
                     </div>
                 </div>
 
-                <!-- Ekli Uygulamalar Listesi (SADECE ADMİNDE) -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-4">📋 Yayındaki Uygulamalar</h3>
-                    <div id="adminAppList" class="space-y-3 max-h-[300px] overflow-y-auto pr-2">
-                        <!-- Liste buraya gelecek -->
-                    </div>
+                <!-- Canlıdaki Uygulamalar Yönetim Tablosu (SADECE ADMİNDE BURADA DURACAK) -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <h3 class="font-extrabold text-slate-900 mb-4 text-sm tracking-tight flex items-center gap-2">📦 Sistemde Aktif Olan Uygulamalar</h3>
+                    <div id="adminAppList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1"></div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // F12 ve Sağ Tık Engeli
+    // F12 Pro Güvenlik Protokolü
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.onkeydown = function(e) {
         if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
@@ -146,23 +169,54 @@
         }
     };
 
-    // Veri Tabanı (LocalStorage)
+    // Google Play Dil Kütüphanesi (Resmi Metin Kalıpları)
+    const playStoreLanguages = {
+        tr: { top: "GET IT ON", bottom: "Google Play" }, // Global ingilizce logo formatı veya lokalize metinler
+        en: { top: "GET IT ON", bottom: "Google Play" },
+        ua: { top: "ЗАВАНТАЖИТИ З", bottom: "Google Play" },
+        ru: { top: "ДОСТУПНО В", bottom: "Google Play" }
+    };
+    
+    // Varsayılan Boş Logolar İçin Kusursuz SVG Placeholder
+    const defaultPlaceholderSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M9.813 15.904L9 21m0 0l-.813-5.096M9 21h3.9m-3.9 0H6.1m6.413-5.096l.813 5.096m0 0l.813-5.096M12.9 21h3.9m-3.9 0h-3.9m3.9-5.096a5.45 5.45 0 01-4.887-3.32A5.45 5.45 0 013 7.68c0-3.01 2.45-5.45 5.45-5.45a5.45 5.45 0 014.887 3.32M9 11.25c.34 0 .667-.033 1-.1M9 11.25a6.762 6.762 0 01-3-1.63M9 11.25c-.34 0-.667-.033-1-.1m2 0a6.79 6.79 0 003-1.63m-4 1.73a6.745 6.745 0 01-3-1.63m4 1.63c.333.067.667.1 1 .1m-1-.1c-.333.067-.667.1-1 .1m1-.1v2.333M12.9 15.904a5.45 5.45 0 004.887-3.32A5.45 5.45 0 0021 7.68c0-3.01-2.45-5.45-5.45-5.45a5.45 5.45 0 00-4.887 3.32M15 11.25c-.333 0-.667-.033-1-.1m1 .1a6.762 6.762 0 003-1.63m-3 1.63c.333 0 .667-.033 1-.1m-2 0a6.79 6.79 0 01-3-1.63m4 1.73a6.745 6.745 0 003-1.63m-4 1.63c-.333.067-.667.1-1 .1m1-.1c.333.067.667.1-1 .1m1-.1v2.333'/></svg>";
+
+    // Veri Depolama Altyapısı
     let apps = JSON.parse(localStorage.getItem('byaltun_apps')) || [];
     let ann = JSON.parse(localStorage.getItem('byaltun_ann')) || {tr:"", ua:"", en:"", ru:"", active: false};
     let adminPass = localStorage.getItem('byaltun_pass') || '1234';
     let logoClicks = 0;
+    let base64IconBuffer = ""; // Yüklenen resmi geçici tutacak buffer
 
-    // Kullanıcı IP Adresi Çekme
+    // IP Sorgulama
     fetch('https://api.ipify.org?format=json')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => { document.getElementById('userIp').innerText = data.ip; })
-        .catch(() => { document.getElementById('userIp').innerText = "Gizli"; });
+        .catch(() => { document.getElementById('userIp').innerText = "127.0.0.1 (Secure)"; });
 
-    // === ANA SAYFA (PUBLIC) FONKSİYONLARI ===
+    // Resim Dosyasını Base64 Formatına Çeviren Dinamik Tetikleyici
+    document.getElementById('appIconInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Güvenlik sınırı: Çok büyük resimlerin localStorage'ı doldurmasını engellemek için optimizasyon
+            if (file.size > 1500000) { 
+                alert("Dosya boyutu çok büyük! Lütfen daha küçük bir ikon seçin.");
+                this.value = "";
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                base64IconBuffer = event.target.result;
+                document.getElementById('iconPreview').src = base64IconBuffer;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // === ANA SAYFA (PUBLIC SHOWROOM) RENDER MOTORU ===
     function renderPublic() {
         const lang = document.getElementById('langSelect').value;
         
-        // Duyuruyu Bas
+        // Duyuru Yönetimi
         const annBox = document.getElementById('publicAnnBox');
         if (ann.active && ann[lang] && ann[lang].trim() !== "") {
             annBox.classList.remove('hidden');
@@ -171,37 +225,62 @@
             annBox.classList.add('hidden');
         }
 
-        // Uygulamaları Bas (Sadece Vitrin, Silme/Düzenleme Yok)
+        // Uygulama Kartları Listeleme (Sadece Gösterim)
         const grid = document.getElementById('publicAppGrid');
         if(apps.length === 0) {
-            grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400">Henüz uygulama eklenmedi.</div>`;
+            grid.innerHTML = `<div class="col-span-full text-center py-20 text-slate-400 font-medium">Bu dilde yayınlanmış herhangi bir uygulama bulunamadı.</div>`;
             return;
         }
 
-        grid.innerHTML = apps.map(app => `
-            <div class="soft-card p-8 flex flex-col h-full">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-6">🤖</div>
-                <h3 class="text-2xl font-bold text-slate-800 mb-2 leading-tight">${app.name[lang] || app.name.en || 'İsimsiz'}</h3>
-                <p class="text-slate-500 text-sm mb-8 flex-grow">${app.desc[lang] || app.desc.en || 'Açıklama yok.'}</p>
-                <a href="${app.link}" target="_blank" class="block w-full py-3.5 bg-slate-900 text-white text-center rounded-xl font-bold hover:bg-indigo-600 transition-colors shadow-md">
-                    Google Play'den İndir
-                </a>
-            </div>
-        `).join('');
+        const playText = playStoreLanguages[lang] || playStoreLanguages.en;
+
+        grid.innerHTML = apps.map(app => {
+            const appName = app.name[lang] || app.name.en || 'Untitled App';
+            const appDesc = app.desc[lang] || app.desc.en || 'No description available for this language.';
+            const appIcon = app.icon || defaultPlaceholderSvg;
+
+            return `
+                <div class="app-card p-7 md:p-8 rounded-3xl flex flex-col h-full bg-white">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="${appIcon}" alt="${appName}" class="w-16 h-16 rounded-2xl object-cover border border-slate-100 shadow-sm bg-slate-50 flex-shrink-0">
+                        <div class="overflow-hidden">
+                            <h3 class="text-xl font-extrabold text-slate-900 truncate leading-snug">${appName}</h3>
+                            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Android App</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8 flex-grow overflow-hidden line-clamp-4">${appDesc}</p>
+                    
+                    <!-- Profesyonel SVG Google Play Butonu -->
+                    <a href="${app.link}" target="_blank" class="play-button flex items-center justify-center gap-3 bg-black text-white px-5 py-2.5 rounded-xl shadow-md shadow-black/5 hover:bg-slate-900 transition-all w-full select-none">
+                        <!-- Orijinal Renk Kodlu Google Play Logosu -->
+                        <svg viewBox="0 0 512 512" class="w-6 h-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#00e5ff" d="M10.3 12.5c-1.3 1.4-2 3.5-2 6.1v474.8c0 2.6.7 4.7 2 6.1l1.4 1.4L273.7 259v-6L11.7 11.1l-1.4 1.4z"/>
+                            <path fill="#ffeb3b" d="M351.4 336.7l-77.7-77.7v-6l77.7-77.7 1.4.8 91.9 52.2c26.2 14.9 26.2 39.3 0 54.2l-91.9 52.2-1.4.8z"/>
+                            <path fill="#ff2d55" d="M273.7 253L11.7 11.1c-3.8-3.8-10.1-2.4-13.8 2.4l275.8 244.1v-4.6z"/>
+                            <path fill="#4caf50" d="M273.7 259L1.1 498.4c3.8 4.9 10.1 6.2 13.8 2.4L273.7 265v-6z"/>
+                        </svg>
+                        <div class="text-left border-l border-slate-800 pl-3">
+                            <div class="text-[9px] font-bold tracking-wider text-slate-400 uppercase leading-none">${playText.top}</div>
+                            <div class="text-base font-extrabold font-sans tracking-tight text-white leading-tight mt-0.5">${playText.bottom}</div>
+                        </div>
+                    </a>
+                </div>
+            `;
+        }).join('');
     }
 
-    // === ADMİN GİRİŞ SİSTEMİ ===
+    // === ADMİN GİRİŞ MEKANİZMASI ===
     function clickLogo() {
         logoClicks++;
         clearTimeout(window.clickTimer);
-        window.clickTimer = setTimeout(() => { logoClicks = 0; }, 2000); // 2 saniye içinde 4 kere tıklanmalı
+        window.clickTimer = setTimeout(() => { logoClicks = 0; }, 2000);
 
         if (logoClicks >= 4) {
-            let p = prompt("Geliştirici Şifresi:");
-            if (p === adminPass) {
+            let passPrompt = prompt("Sistem Şifresini Giriniz:");
+            if (passPrompt === adminPass) {
                 openAdmin();
-            } else if (p !== null) {
-                alert("Hatalı şifre!");
+            } else if (passPrompt !== null) {
+                alert("Erişim Reddedildi: Hatalı Şifre!");
             }
             logoClicks = 0;
         }
@@ -209,10 +288,9 @@
 
     function openAdmin() {
         document.getElementById('adminPanel').classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Arka plan scrollunu kapat
+        document.body.style.overflow = 'hidden';
         document.getElementById('adminPassView').innerText = adminPass;
         
-        // Duyuru inputlarını doldur
         document.getElementById('annTr').value = ann.tr || "";
         document.getElementById('annUa').value = ann.ua || "";
         document.getElementById('annEn').value = ann.en || "";
@@ -225,18 +303,18 @@
         document.getElementById('adminPanel').classList.add('hidden');
         document.body.style.overflow = 'auto';
         resetAppForm();
-        renderPublic(); // Çıkarken ana sayfayı güncelle
+        renderPublic();
     }
 
-    // === ADMİN İŞLEMLERİ: ŞİFRE & DUYURU ===
+    // === ADMİN ÖZEL AYARLARI ===
     function changePassword() {
-        const newP = document.getElementById('newPassInput').value;
-        if(newP.trim().length > 0) {
-            adminPass = newP;
+        const val = document.getElementById('newPassInput').value;
+        if(val.trim().length > 0) {
+            adminPass = val;
             localStorage.setItem('byaltun_pass', adminPass);
             document.getElementById('adminPassView').innerText = adminPass;
             document.getElementById('newPassInput').value = "";
-            alert("Şifre başarıyla değiştirildi.");
+            alert("Giriş şifresi güncellenmiştir.");
         }
     }
 
@@ -249,7 +327,7 @@
             ru: document.getElementById('annRu').value
         };
         localStorage.setItem('byaltun_ann', JSON.stringify(ann));
-        alert("Duyuru yayınlandı!");
+        alert("Duyuru yayına alındı.");
     }
 
     function clearAnnouncement() {
@@ -259,26 +337,29 @@
         document.getElementById('annUa').value = "";
         document.getElementById('annEn').value = "";
         document.getElementById('annRu').value = "";
-        alert("Duyuru yayından kaldırıldı.");
+        alert("Duyuru tüm dillerden kaldırıldı.");
     }
 
-    // === ADMİN İŞLEMLERİ: UYGULAMA YÖNETİMİ (EKLE/DÜZENLE/SİL) ===
+    // === ADMİN: UYGULAMA MOTORU (EKLEME / DÜZENLEME / SİLME) ===
     function renderAdminAppList() {
         const listDiv = document.getElementById('adminAppList');
         if(apps.length === 0) {
-            listDiv.innerHTML = `<p class="text-sm text-slate-400 italic">Sistemde kayıtlı uygulama yok.</p>`;
+            listDiv.innerHTML = `<p class="text-xs text-slate-400 italic py-4 text-center">Sistem veri tabanında kayıtlı uygulama bulunmamaktadır.</p>`;
             return;
         }
 
         listDiv.innerHTML = apps.map((app, i) => `
-            <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
-                <div>
-                    <strong class="text-slate-800 block">${app.name.tr || 'İsimsiz Uygulama'}</strong>
-                    <span class="text-xs text-slate-500 truncate w-48 block">${app.link}</span>
+            <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-200/70 rounded-xl hover:bg-slate-100/50 transition">
+                <div class="flex items-center gap-3 overflow-hidden pr-4">
+                    <img src="${app.icon || defaultPlaceholderSvg}" class="w-10 h-10 rounded-lg object-cover bg-white border flex-shrink-0">
+                    <div class="overflow-hidden">
+                        <strong class="text-slate-900 text-sm block truncate">${app.name.tr || app.name.en || 'İsimsiz'}</strong>
+                        <span class="text-[11px] text-slate-400 font-mono block truncate">${app.link}</span>
+                    </div>
                 </div>
-                <div class="flex gap-2">
-                    <button onclick="loadAppToEdit(${i})" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded text-sm font-bold hover:bg-indigo-200">Düzenle</button>
-                    <button onclick="deleteApp(${i})" class="bg-red-100 text-red-700 px-3 py-1 rounded text-sm font-bold hover:bg-red-200">Sil</button>
+                <div class="flex gap-2 flex-shrink-0">
+                    <button onclick="loadAppToEdit(${i})" class="bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-slate-800 transition">Düzenle</button>
+                    <button onclick="deleteApp(${i})" class="bg-red-50 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-100 transition">Sil</button>
                 </div>
             </div>
         `).join('');
@@ -287,7 +368,9 @@
     function saveApp() {
         const id = parseInt(document.getElementById('editAppId').value);
         
+        // Form alanlarının toplanması
         const appData = {
+            icon: base64IconBuffer, // Base64 verisi veya boş değer
             name: {
                 tr: document.getElementById('appNameTr').value,
                 ua: document.getElementById('appNameUa').value,
@@ -303,10 +386,15 @@
             link: document.getElementById('appLink').value
         };
 
+        if(!appData.link.trim()) {
+            alert("Lütfen geçerli bir Google Play Store linki girin.");
+            return;
+        }
+
         if (id === -1) {
-            apps.push(appData); // Yeni Ekle
+            apps.push(appData); // Yeni kayıt
         } else {
-            apps[id] = appData; // Mevcudu Güncelle
+            apps[id] = appData; // Güncelleme
         }
 
         localStorage.setItem('byaltun_apps', JSON.stringify(apps));
@@ -317,12 +405,14 @@
     function loadAppToEdit(index) {
         const app = apps[index];
         document.getElementById('editAppId').value = index;
-        document.getElementById('formTitle').innerHTML = "✏️ Uygulamayı Düzenle";
-        document.getElementById('saveAppBtn').innerText = "Değişiklikleri Kaydet";
-        document.getElementById('saveAppBtn').className = "flex-1 bg-indigo-500 text-white font-bold py-3 rounded-xl hover:bg-indigo-600 transition";
+        document.getElementById('formTitle').innerHTML = "✏️ Uygulama Konfigürasyonunu Güncelle";
+        document.getElementById('saveAppBtn').innerText = "Değişiklikleri Kaydet ve Yayınla";
         document.getElementById('cancelEditBtn').classList.remove('hidden');
 
-        // Formu doldur
+        base64IconBuffer = app.icon || "";
+        document.getElementById('iconPreview').src = app.icon || defaultPlaceholderSvg;
+
+        // Form alanlarını besleme
         document.getElementById('appNameTr').value = app.name.tr || "";
         document.getElementById('appNameUa').value = app.name.ua || "";
         document.getElementById('appNameEn').value = app.name.en || "";
@@ -337,7 +427,7 @@
     }
 
     function deleteApp(index) {
-        if(confirm("Bu uygulamayı tamamen silmek istediğine emin misin?")) {
+        if(confirm("Bu uygulamayı veri tabanından ve yayından tamamen kaldırmak istediğinize emin misiniz?")) {
             apps.splice(index, 1);
             localStorage.setItem('byaltun_apps', JSON.stringify(apps));
             renderAdminAppList();
@@ -347,17 +437,19 @@
 
     function resetAppForm() {
         document.getElementById('editAppId').value = "-1";
-        document.getElementById('formTitle').innerHTML = "📱 Yeni Uygulama Ekle";
-        document.getElementById('saveAppBtn').innerText = "Listeye Ekle";
-        document.getElementById('saveAppBtn').className = "flex-1 bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition";
+        document.getElementById('formTitle').innerHTML = "📱 Yeni Uygulama Entegre Et";
+        document.getElementById('saveAppBtn').innerText = "Veriyi Canlıya Al";
         document.getElementById('cancelEditBtn').classList.add('hidden');
+        
+        base64IconBuffer = "";
+        document.getElementById('iconPreview').src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'/></svg>";
+        document.getElementById('appIconInput').value = "";
 
-        // Formu temizle
         const inputs = ['appNameTr', 'appNameUa', 'appNameEn', 'appNameRu', 'appDescTr', 'appDescUa', 'appDescEn', 'appDescRu', 'appLink'];
         inputs.forEach(id => document.getElementById(id).value = "");
     }
 
-    // İlk Yükleme
+    // İlk Çalıştırma Komutu
     renderPublic();
 </script>
 </body>
