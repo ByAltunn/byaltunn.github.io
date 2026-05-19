@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dev/ByAltun</title>
+    <style>
+        :root { --primary: #6366f1; --dark: #0f172a; --card: #1e293b; }
+        body { font-family: 'Inter', sans-serif; background: var(--dark); color: white; margin: 0; padding: 0; }
+        .nav { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .logo { font-size: 28px; font-weight: 800; color: var(--primary); cursor: pointer; transition: 0.3s; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 40px; max-width: 1200px; margin: auto; }
+        .card { background: var(--card); padding: 25px; border-radius: 20px; border: 1px solid #334155; transition: 0.4s; }
+        .card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .btn { background: var(--primary); color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; display: inline-block; font-weight: 600; margin-top: 15px; }
+        
+        /* Admin Panel */
+        #adminOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; justify-content: center; align-items: center; }
+        .admin-box { background: var(--card); padding: 40px; border-radius: 20px; width: 400px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #0f172a; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <!-- Logoya 4 kere tıkla -->
+    <div class="logo" onclick="checkClicks()">dev/ByAltun</div>
+    <select id="lang" onchange="translatePage()">
+        <option value="tr">TR</option><option value="en">ENG</option>
+    </select>
+</div>
+
+<div class="grid" id="appGrid"></div>
+
+<!-- Admin Paneli -->
+<div id="adminOverlay">
+    <div class="admin-box">
+        <h2 id="adminTitle">Admin Girişi</h2>
+        <input type="password" id="passInput" placeholder="Şifre Gir">
+        <button class="btn" onclick="verifyAdmin()">Giriş Yap</button>
+        <div id="panelControls" style="display:none;">
+            <input type="text" id="aName" placeholder="Uygulama Adı">
+            <input type="text" id="aDesc" placeholder="Açıklama">
+            <input type="text" id="aLink" placeholder="Google Play URL">
+            <button class="btn" onclick="addApp()">Ekle</button>
+            <button class="btn" style="background:#ef4444" onclick="closeAdmin()">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Güvenlik: F12 ve Sağ Tık Engeli
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
+
+    let clickCount = 0;
+    let apps = JSON.parse(localStorage.getItem('apps')) || [];
+    let adminPass = localStorage.getItem('adminPass') || '1234';
+
+    function checkClicks() {
+        clickCount++;
+        if(clickCount >= 4) {
+            document.getElementById('adminOverlay').style.display = 'flex';
+            clickCount = 0;
+        }
+    }
+
+    function verifyAdmin() {
+        if(document.getElementById('passInput').value === adminPass) {
+            document.getElementById('panelControls').style.display = 'block';
+            document.getElementById('passInput').style.display = 'none';
+        } else { alert('Hatalı Şifre!'); }
+    }
+
+    function addApp() {
+        const name = document.getElementById('aName').value;
+        const desc = document.getElementById('aDesc').value;
+        const link = document.getElementById('aLink').value;
+        apps.push({name, desc, link});
+        localStorage.setItem('apps', JSON.stringify(apps));
+        render();
+    }
+
+    function render() {
+        document.getElementById('appGrid').innerHTML = apps.map(app => `
+            <div class="card">
+                <h2>${app.name}</h2>
+                <p>${app.desc}</p>
+                <a href="${app.link}" target="_blank" class="btn">Google Play İndir</a>
+            </div>
+        `).join('');
+    }
+
+    function closeAdmin() { document.getElementById('adminOverlay').style.display = 'none'; }
+
+    render();
+</script>
+</body>
+</html>
