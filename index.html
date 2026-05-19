@@ -2,79 +2,78 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dev/ByAltun</title>
+    <title>dev/ByAltun | Professional Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --primary: #6366f1; --dark: #0f172a; --card: #1e293b; }
-        body { font-family: 'Inter', sans-serif; background: var(--dark); color: white; margin: 0; padding: 0; }
-        .nav { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
-        .logo { font-size: 28px; font-weight: 800; color: var(--primary); cursor: pointer; transition: 0.3s; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 40px; max-width: 1200px; margin: auto; }
-        .card { background: var(--card); padding: 25px; border-radius: 20px; border: 1px solid #334155; transition: 0.4s; }
-        .card:hover { transform: translateY(-10px); border-color: var(--primary); }
-        .btn { background: var(--primary); color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; display: inline-block; font-weight: 600; margin-top: 15px; }
-        
-        /* Admin Panel */
-        #adminOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; justify-content: center; align-items: center; }
-        .admin-box { background: var(--card); padding: 40px; border-radius: 20px; width: 400px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #0f172a; color: white; }
+        body { background: #0f172a; transition: 0.3s; }
+        .dark { background: #f8fafc; color: #0f172a; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
-<body>
+<body class="text-white">
 
-<div class="nav">
-    <!-- Logoya 4 kere tıkla -->
-    <div class="logo" onclick="checkClicks()">dev/ByAltun</div>
-    <select id="lang" onchange="translatePage()">
-        <option value="tr">TR</option><option value="en">ENG</option>
-    </select>
-</div>
+<!-- Navbar -->
+<nav class="p-6 flex justify-between items-center glass sticky top-0 z-50">
+    <div class="text-2xl font-bold text-indigo-500 cursor-pointer" onclick="clickCount()">dev/ByAltun</div>
+    <div class="flex gap-4 items-center">
+        <button onclick="toggleTheme()" class="text-xl">🌙</button>
+        <select id="lang" onchange="render()" class="bg-slate-800 p-2 rounded">
+            <option value="tr">🇹🇷 TR</option><option value="ua">🇺🇦 UA</option>
+            <option value="en">🇺🇸 ENG</option><option value="ru">🇷🇺 RU</option>
+        </select>
+    </div>
+</nav>
 
-<div class="grid" id="appGrid"></div>
+<!-- Duyurular -->
+<div id="announcement" class="max-w-4xl mx-auto mt-10 p-6 bg-indigo-900/20 border border-indigo-500/30 rounded-2xl"></div>
 
-<!-- Admin Paneli -->
-<div id="adminOverlay">
-    <div class="admin-box">
-        <h2 id="adminTitle">Admin Girişi</h2>
-        <input type="password" id="passInput" placeholder="Şifre Gir">
-        <button class="btn" onclick="verifyAdmin()">Giriş Yap</button>
-        <div id="panelControls" style="display:none;">
-            <input type="text" id="aName" placeholder="Uygulama Adı">
-            <input type="text" id="aDesc" placeholder="Açıklama">
-            <input type="text" id="aLink" placeholder="Google Play URL">
-            <button class="btn" onclick="addApp()">Ekle</button>
-            <button class="btn" style="background:#ef4444" onclick="closeAdmin()">Kapat</button>
+<!-- Uygulamalar -->
+<div class="max-w-6xl mx-auto p-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="appGrid"></div>
+
+<!-- Admin Paneli (Gizli) -->
+<div id="adminOverlay" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900 p-8 rounded-3xl w-full max-w-2xl border border-indigo-500">
+        <h2 class="text-2xl font-bold mb-4">Admin Dashboard</h2>
+        <div id="loginArea">
+            <input type="password" id="pass" class="w-full p-3 rounded bg-slate-800" placeholder="Admin Şifresi">
+            <button onclick="verify()" class="mt-4 bg-indigo-600 px-6 py-2 rounded">Giriş</button>
+        </div>
+        <div id="panelArea" class="hidden">
+            <input type="text" id="aName" placeholder="Uygulama Adı (Örn: {tr:'App1', en:'App1'})" class="w-full p-2 mb-2 bg-slate-800">
+            <textarea id="aDesc" placeholder="Açıklamalar (JSON format: {tr:'...', en:'...'})" class="w-full p-2 mb-2 bg-slate-800"></textarea>
+            <input type="text" id="aLink" placeholder="Link" class="w-full p-2 mb-2 bg-slate-800">
+            <button onclick="saveApp()" class="bg-green-600 p-2 rounded">Kaydet / Ekle</button>
+            <button onclick="closeAdmin()" class="bg-red-600 p-2 rounded">Kapat</button>
         </div>
     </div>
 </div>
 
+<footer class="text-center py-10 opacity-50">
+    IP Address: <span id="ip">Loading...</span>
+</footer>
+
 <script>
-    // Güvenlik: F12 ve Sağ Tık Engeli
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
-
-    let clickCount = 0;
+    let clicks = 0;
     let apps = JSON.parse(localStorage.getItem('apps')) || [];
-    let adminPass = localStorage.getItem('adminPass') || '1234';
+    
+    // IP Fetch
+    fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => document.getElementById('ip').innerText = data.ip);
 
-    function checkClicks() {
-        clickCount++;
-        if(clickCount >= 4) {
-            document.getElementById('adminOverlay').style.display = 'flex';
-            clickCount = 0;
+    function clickCount() {
+        clicks++;
+        if(clicks === 4) document.getElementById('adminOverlay').style.display = 'flex';
+    }
+
+    function verify() {
+        if(document.getElementById('pass').value === '1234') {
+            document.getElementById('loginArea').style.display = 'none';
+            document.getElementById('panelArea').style.display = 'block';
         }
     }
 
-    function verifyAdmin() {
-        if(document.getElementById('passInput').value === adminPass) {
-            document.getElementById('panelControls').style.display = 'block';
-            document.getElementById('passInput').style.display = 'none';
-        } else { alert('Hatalı Şifre!'); }
-    }
-
-    function addApp() {
-        const name = document.getElementById('aName').value;
-        const desc = document.getElementById('aDesc').value;
+    function saveApp() {
+        const name = JSON.parse(document.getElementById('aName').value);
+        const desc = JSON.parse(document.getElementById('aDesc').value);
         const link = document.getElementById('aLink').value;
         apps.push({name, desc, link});
         localStorage.setItem('apps', JSON.stringify(apps));
@@ -82,16 +81,20 @@
     }
 
     function render() {
-        document.getElementById('appGrid').innerHTML = apps.map(app => `
-            <div class="card">
-                <h2>${app.name}</h2>
-                <p>${app.desc}</p>
-                <a href="${app.link}" target="_blank" class="btn">Google Play İndir</a>
+        const lang = document.getElementById('lang').value;
+        document.getElementById('appGrid').innerHTML = apps.map((app, i) => `
+            <div class="glass p-6 rounded-2xl hover:scale-105 transition">
+                <h3 class="text-xl font-bold">${app.name[lang]}</h3>
+                <p class="mt-2 text-sm opacity-80">${app.desc[lang]}</p>
+                <a href="${app.link}" class="mt-4 block bg-indigo-600 text-center py-2 rounded-lg">Google Play</a>
+                <button onclick="deleteApp(${i})" class="text-red-400 mt-2 text-xs">Sil</button>
             </div>
         `).join('');
     }
 
+    function deleteApp(i) { apps.splice(i, 1); localStorage.setItem('apps', JSON.stringify(apps)); render(); }
     function closeAdmin() { document.getElementById('adminOverlay').style.display = 'none'; }
+    function toggleTheme() { document.body.classList.toggle('dark'); }
 
     render();
 </script>
